@@ -29,6 +29,10 @@ export const App = () => {
   = useState(categoriesFromServer);
   const [selectedUsers, setSelectedUsers] = useState(products);
 
+  const visibleProducts = selectedUsers
+    .filter(product => (product.name.toLowerCase()
+      .includes(search.toLowerCase().trim())));
+
   return (
     <div className="section">
       <div className="container">
@@ -123,7 +127,10 @@ export const App = () => {
                 data-cy="ResetAllButton"
                 href="#/"
                 className="button is-link is-outlined is-fullwidth"
-                onClick={() => (setSelectedUsers(products))}
+                onClick={() => {
+                  setSearch('');
+                  setSelectedUsers(products);
+                }}
               >
                 Reset all filters
               </a>
@@ -195,7 +202,7 @@ export const App = () => {
             )}
 
             <tbody>
-              {selectedUsers.map(product => (
+              {visibleProducts.map(product => (
                 <tr data-cy="Product" key={product.id}>
                   <td className="has-text-weight-bold" data-cy="ProductId">
                     {product.id}
